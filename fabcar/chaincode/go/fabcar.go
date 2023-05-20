@@ -21,7 +21,6 @@ type SmartContract struct {
 
 // Car describes basic details of what makes up a car
 type Car struct {
-	User_id             string `json:"user_id"`
 	Name                string `json:"name"`
 	Birthday            string `json:"birthday"`
 	Vaccine_name        string `json:"vaccine_name"`
@@ -39,13 +38,13 @@ type QueryResult struct {
 // InitLedger adds a base set of cars to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	cars := []Car{
-		Car{User_id: "001", Name: "江祐民", Birthday: "1999-09-10", Vaccine_name: "Moderna COVID-19 Vaccine", Vaccine_batchNumber: "a123456", Vaccination_date: "2021-01-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
-		Car{User_id: "002", Name: "王小名", Birthday: "1989-09-10", Vaccine_name: "Pfizer-BioNTech COVID-19 Vaccine", Vaccine_batchNumber: "b123456", Vaccination_date: "2021-08-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
+		Car{Name: "江祐民", Birthday: "1999-09-10", Vaccine_name: "Moderna COVID-19 Vaccine", Vaccine_batchNumber: "a123456", Vaccination_date: "2021-01-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
+		Car{Name: "王小名", Birthday: "1989-09-10", Vaccine_name: "Pfizer-BioNTech COVID-19 Vaccine", Vaccine_batchNumber: "b123456", Vaccination_date: "2021-08-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
 	}
 
 	for i, car := range cars {
 		carAsBytes, _ := json.Marshal(car)
-		err := ctx.GetStub().PutState("CAR"+strconv.Itoa(i), carAsBytes)
+		err := ctx.GetStub().PutState("user"+strconv.Itoa(i), carAsBytes)
 
 		if err != nil {
 			return fmt.Errorf("Failed to put to world state. %s", err.Error())
@@ -56,9 +55,8 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 }
 
 // CreateCar adds a new car to the world state with given details
-func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, user_id string, name string, birthday string, vaccine_name string, vaccine_batchNumber string, vaccination_date string, vaccination_org string) error {
+func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, carNumber string, name string, birthday string, vaccine_name string, vaccine_batchNumber string, vaccination_date string, vaccination_org string) error {
 	car := Car{
-		User_id:             user_id,
 		Name:                name,
 		Birthday:            birthday,
 		Vaccine_name:        vaccine_name,
@@ -69,7 +67,7 @@ func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, u
 
 	carAsBytes, _ := json.Marshal(car)
 
-	return ctx.GetStub().PutState(user_id, carAsBytes)
+	return ctx.GetStub().PutState(carNumber, carAsBytes)
 }
 
 // QueryCar returns the car stored in the world state with given id

@@ -91,12 +91,12 @@ function queryAllCars() {
         for (var i = 0; i < obj.length; i++) {
             html += '<tr>' +
             '<td>' + key + '</td>' +
-            '<td>' + obj.name + '</td>' +
-            '<td>' + obj.birthday + '</td>' +
-            '<td>' + obj.vaccine_name + '</td>' +
-            '<td>' + obj.vaccine_batchNumber + '</td>' +
-            '<td>' + obj.vaccination_date + '</td>' +
-            '<td>' + obj.vaccination_org + '</td>' +
+            '<td>' + obj[i].Record.name + '</td>' +
+            '<td>' + obj[i].Record.birthday + '</td>' +
+            '<td>' + obj[i].Record.vaccine_name + '</td>' +
+            '<td>' + obj[i].Record.vaccine_batchNumber + '</td>' +
+            '<td>' + obj[i].Record.vaccination_date + '</td>' +
+            '<td>' + obj[i].Record.vaccination_org + '</td>' +
             '</tr>';
         }
         tbody.innerHTML = html;
