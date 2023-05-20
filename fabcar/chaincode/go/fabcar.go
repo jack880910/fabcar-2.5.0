@@ -21,10 +21,13 @@ type SmartContract struct {
 
 // Car describes basic details of what makes up a car
 type Car struct {
-	Make   string `json:"make"`
-	Model  string `json:"model"`
-	Colour string `json:"colour"`
-	Owner  string `json:"owner"`
+	User_id             string `json:"user_id"`
+	Name                string `json:"name"`
+	Birthday            string `json:"birthday"`
+	Vaccine_name        string `json:"vaccine_name"`
+	Vaccine_batchNumber string `json:"vaccine_batchNumber"`
+	Vaccination_date    string `json:"vaccination_date"`
+	Vaccination_org     string `json:"vaccination_org"`
 }
 
 // QueryResult structure used for handling result of query
@@ -36,16 +39,8 @@ type QueryResult struct {
 // InitLedger adds a base set of cars to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	cars := []Car{
-		Car{Make: "Toyota", Model: "Prius", Colour: "blue", Owner: "Tomoko"},
-		Car{Make: "Ford", Model: "Mustang", Colour: "red", Owner: "Brad"},
-		Car{Make: "Hyundai", Model: "Tucson", Colour: "green", Owner: "Jin Soo"},
-		Car{Make: "Volkswagen", Model: "Passat", Colour: "yellow", Owner: "Max"},
-		Car{Make: "Tesla", Model: "S", Colour: "black", Owner: "Adriana"},
-		Car{Make: "Peugeot", Model: "205", Colour: "purple", Owner: "Michel"},
-		Car{Make: "Chery", Model: "S22L", Colour: "white", Owner: "Aarav"},
-		Car{Make: "Fiat", Model: "Punto", Colour: "violet", Owner: "Pari"},
-		Car{Make: "Tata", Model: "Nano", Colour: "indigo", Owner: "Valeria"},
-		Car{Make: "Holden", Model: "Barina", Colour: "brown", Owner: "Shotaro"},
+		Car{User_id: "001", Name: "江祐民", Birthday: "1999-09-10", Vaccine_name: "Moderna COVID-19 Vaccine", Vaccine_batchNumber: "a123456", Vaccination_date: "2021-01-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
+		Car{User_id: "002", Name: "王小名", Birthday: "1989-09-10", Vaccine_name: "Pfizer-BioNTech COVID-19 Vaccine", Vaccine_batchNumber: "b123456", Vaccination_date: "2021-08-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
 	}
 
 	for i, car := range cars {
@@ -61,17 +56,20 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 }
 
 // CreateCar adds a new car to the world state with given details
-func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, carNumber string, make string, model string, colour string, owner string) error {
+func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, user_id string, name string, birthday string, vaccine_name string, vaccine_batchNumber string, vaccination_date string, vaccination_org string) error {
 	car := Car{
-		Make:   make,
-		Model:  model,
-		Colour: colour,
-		Owner:  owner,
+		User_id:             user_id,
+		Name:                name,
+		Birthday:            birthday,
+		Vaccine_name:        vaccine_name,
+		Vaccine_batchNumber: vaccine_batchNumber,
+		Vaccination_date:    vaccination_date,
+		Vaccination_org:     vaccination_org,
 	}
 
 	carAsBytes, _ := json.Marshal(car)
 
-	return ctx.GetStub().PutState(carNumber, carAsBytes)
+	return ctx.GetStub().PutState(user_id, carAsBytes)
 }
 
 // QueryCar returns the car stored in the world state with given id
@@ -124,19 +122,19 @@ func (s *SmartContract) QueryAllCars(ctx contractapi.TransactionContextInterface
 }
 
 // ChangeCarOwner updates the owner field of car with given id in world state
-func (s *SmartContract) ChangeCarOwner(ctx contractapi.TransactionContextInterface, carNumber string, newOwner string) error {
-	car, err := s.QueryCar(ctx, carNumber)
+// func (s *SmartContract) ChangeCarOwner(ctx contractapi.TransactionContextInterface, carNumber string, newOwner string) error {
+// 	car, err := s.QueryCar(ctx, carNumber)
 
-	if err != nil {
-		return err
-	}
+// 	if err != nil {
+// 		return err
+// 	}
 
-	car.Owner = newOwner
+// 	car.Owner = newOwner
 
-	carAsBytes, _ := json.Marshal(car)
+// 	carAsBytes, _ := json.Marshal(car)
 
-	return ctx.GetStub().PutState(carNumber, carAsBytes)
-}
+// 	return ctx.GetStub().PutState(carNumber, carAsBytes)
+// }
 
 // GetHistoryForCar gets the historical data of a car from the ledger
 func (s *SmartContract) GetHistoryForCar(ctx contractapi.TransactionContextInterface, carNumber string) (string, error) {
