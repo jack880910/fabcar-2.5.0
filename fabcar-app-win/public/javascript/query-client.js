@@ -44,10 +44,12 @@ function queryCar(key) {
 
         var html = '<tr>' +
             '<td>' + key + '</td>' +
-            '<td>' + obj.colour + '</td>' +
-            '<td>' + obj.make + '</td>' +
-            '<td>' + obj.model + '</td>' +
-            '<td>' + obj.owner + '</td>' +
+            '<td>' + obj.name + '</td>' +
+            '<td>' + obj.birthday + '</td>' +
+            '<td>' + obj.vaccine_name + '</td>' +
+            '<td>' + obj.vaccine_batchNumber + '</td>' +
+            '<td>' + obj.vaccination_date + '</td>' +
+            '<td>' + obj.vaccination_org + '</td>' +
             '</tr>';
 
         tbody.innerHTML = html;
@@ -88,12 +90,14 @@ function queryAllCars() {
         var html = "";
         for (var i = 0; i < obj.length; i++) {
             html += '<tr>' +
-                '<td>' + obj[i].Key + '</td>' +
-                '<td>' + obj[i].Record.colour + '</td>' +
-                '<td>' + obj[i].Record.make + '</td>' +
-                '<td>' + obj[i].Record.model + '</td>' +
-                '<td>' + obj[i].Record.owner + '</td>' +
-                '</tr>';
+            '<td>' + key + '</td>' +
+            '<td>' + obj.name + '</td>' +
+            '<td>' + obj.birthday + '</td>' +
+            '<td>' + obj.vaccine_name + '</td>' +
+            '<td>' + obj.vaccine_batchNumber + '</td>' +
+            '<td>' + obj.vaccination_date + '</td>' +
+            '<td>' + obj.vaccination_org + '</td>' +
+            '</tr>';
         }
         tbody.innerHTML = html;
     };
