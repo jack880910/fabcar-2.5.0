@@ -1,0 +1,31 @@
+
+# VERSION: Hyperledger Fabric v2.5.0
+# Project: FabCar
+# Channel name: mychannel
+# Chaincode name: mycc
+# Chaincode: 
+#    1. Golang version: ~/fabric-proj/fabcar/chaincode/go
+#    2. JavaScript version: ~/fabric-proj/fabcar/chaincode/javascript
+#    3. Java version: ~/fabric-proj/fabcar/chaincode/java
+# CouchDB: v3.2.2
+# Fabric CA: v1.5.6
+# Network: fabric_test
+
+
+####################
+###   建立專案   ###
+####################
+
+# STEP 1: 使用下列指令在Ubuntu主機家目錄中建立fabric-proj專案目錄(若有舊的會先被刪除)
+
+$ cd ~/ && sudo rm -rf ~/fabric-proj && mkdir ~/fabric-proj
+
+
+# STEP 2：使用WinSCP將fabcar目錄複製到~/fabric-proj之中
+
+
+########################################
+###   下一步：啟動fabcar區塊鏈網路   ###
+########################################
+
+# 根據 2-start-network.txt 的操作說明，來啟動區塊鏈網路與網頁伺服器

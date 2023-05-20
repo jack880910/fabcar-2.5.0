@@ -1,0 +1,76 @@
+
+### 在虛擬機(Ubuntu端)運行區塊鏈網路，並在主機端(Windows端)運行應用程式的作法：
+### VERSION: Hyperledger Fabric v2.5.0
+### Project: FabCar
+### Channel name: mychannel
+### Chaincode name: mycc
+### Chaincode: 
+###    1. Golang version: ~/fabric-proj/fabcar/chaincode/go
+###    2. JavaScript version: ~/fabric-proj/fabcar/chaincode/javascript
+###    3. Java version: ~/fabric-proj/fabcar/chaincode/java
+### CouchDB: v3.2.2
+### Fabric CA: v1.5.6
+### Network: fabric_test
+
+
+#########################################
+### Step 1: 執行環境建置
+#########################################
+
+依照 "W1-Tools for Windows (2.5.0).txt" 之說明建立Windows端的執行環境
+
+
+#########################################
+### Step 2: modules/packages installation
+#########################################
+
+# 在 fabcar-app-win 目錄中執行下列指令：
+
+# 刪除 node_modules, tsconfig.json, package.json, package-lock.json
+
+$ tsc --init
+
+$ npm init -y
+
+$ npm i --save-dev @tsconfig/node14 @tsconfig/node16 @tsconfig/node18
+
+$ npm i --save @hyperledger/fabric-gateway
+
+$ npm i @vladmandic/pilogger
+
+$ npm i express cookie-parser express-session morgan pug
+
+$ npm i --save-dev @types/express @types/cookie-parser @types/express-session @types/morgan @types/pug
+
+
+#########################################
+### Step 3: launch the application
+#########################################
+
+# 在虛擬機(Ubuntu端)運行區塊鏈網路，並在主機端(Windows端)運行應用程式的作法：
+
+1. 在Oracle VM VirtualBox中設定虛擬機的連接埠轉送(主機 <--> 客體)
+   192.168.56.1:7051 <--> 10.0.2.15:7051
+
+2. 啟動虛擬機建立區塊鏈網路
+    (a) 在Oracle VM VirtualBox中啟動虛擬機
+    (b) 依照 fabcar/deployment/using-script/1-build-project.txt 建立專案
+    (c) 依照 fabcar/deployment/using-script/2-start-network.txt 啟動區塊鏈網路
+	   
+3. 使用WinSCP將虛擬機(Ubuntu端)中的 ~/fabric-proj/fabcar/network/organizations/peerOrganizations/org1.example.com
+   複製到主機(Windows端)中的 fabcar-app-win/crypto/
+   
+4. 修改fabric-client-base.ts
+    (下列兩項在本範例中已修改完成，無須再做修改)
+    (a) 將 export const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', 'network', 'organizations', 'peerOrganizations', 'org1.example.com'));
+        修改為 export const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, 'crypto', 'org1.example.com'));
+    (b) 將 export const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
+        修改為 export const peerEndpoint = envOrDefault('PEER_ENDPOINT', '192.168.56.1:7051');
+
+5. 設定防火牆：開啟TCP port 8080
+
+6. 在主機端fabcar-app-win中使用Terminal執行下列指令：
+
+   $ ts-node app.ts
+
+7. 開啟瀏覽器並在網址列輸入 http://localhost:8080/

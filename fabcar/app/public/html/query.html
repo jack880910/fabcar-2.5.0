@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FabCar Demo: QueryAllCars</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Hyperledger Fabric 2.5.0, Blockchain, CA, CouchDB, FabCar">
+    <script language="javascript" src="/javascript/query-client.js"></script>
+</head>
+
+<body>
+    <p>
+    <form id="form-fabcar-query">
+        <input id="input-fabcar-key" type="text" placeholder="編號" autofocus>
+        <button type="submit" onclick="javascript:query();">查詢車輛</button>
+        <button onclick="javascript:clearFabcarTable()">清除資料</button>
+    </form>
+    </p>
+    <hr>
+    <table id="fabcar-table" style="width:100%; text-align:left; border:#049b18 2px solid; border-collapse:collapse">
+        <thead>
+            <tr style="background-color:green; font-size: medium; color:white">
+                <th scope="col">編號</th>
+                <th scope="col">顏色</th>
+                <th scope="col">製造商</th>
+                <th scope="col">型式</th>
+                <th scope="col">車主</th>
+            </tr>
+        </thead>
+        <tbody id="fabcar-tbody">
+        </tbody>
+    </table>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FabCar Demo: GetHistoryForCar</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Hyperledger Fabric 2.5.0, Blockchain, CA, CouchDB, FabCar">
+    <script language="javascript" src="/javascript/history-client.js"></script>
+</head>
+
+<body>
+    <p>
+    <form id="form-fabcar-history">
+        <input id="input-fabcar-key" type="text" placeholder="編號" autofocus>
+        <button type="submit" onclick="javascript:getHistoryForCar();">查詢歷史資料</button>
+        <button onclick="javascript:clearFabcarTable()">清除資料</button>
+    </form>
+    </p>
+    <hr>
+    <table id="fabcar-table" style="width:100%; text-align:left; border:#049b18 2px solid; border-collapse:collapse">
+        <thead>
+            <tr style="background-color:green; font-size: medium; color:white">
+                <th scope="col">編號</th>
+                <th scope="col">顏色</th>
+                <th scope="col">製造商</th>
+                <th scope="col">型式</th>
+                <th scope="col">車主</th>
+                <th scope="col">Timestamp</th>
+                <th scope="col">IsDelete</th>
+                <th scope="col">TxId</th>
+            </tr>
+        </thead>
+        <tbody id="fabcar-tbody">
+        </tbody>
+    </table>
+</body>
+
+</html>
