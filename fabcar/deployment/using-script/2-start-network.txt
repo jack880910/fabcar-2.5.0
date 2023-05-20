@@ -18,6 +18,24 @@ $ chmod +x \
   ~/fabric-proj/fabcar/network/scripts/utils.sh \
   ~/fabric-proj/fabcar/network/organizations/ccp-generate.sh \
   ~/fabric-proj/fabcar/network/organizations/fabric-ca/registerEnroll.sh
+ 
+//for my proj
+
+  chmod +x \
+  ~/fabcar-2.5.0/fabcar/startFabric.sh \
+  ~/fabcar-2.5.0/fabcar/networkDown.sh \
+  ~/fabcar-2.5.0/fabcar/network/network.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/ccutils.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/configUpdate.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/createChannel.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/deployCC.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/deployCCAAS.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/envVar.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/pkgcc.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/setAnchorPeer.sh \
+  ~/fabcar-2.5.0/fabcar/network/scripts/utils.sh \
+  ~/fabcar-2.5.0/fabcar/network/organizations/ccp-generate.sh \
+  ~/fabcar-2.5.0/fabcar/network/organizations/fabric-ca/registerEnroll.sh
 
 
 #############################################################
