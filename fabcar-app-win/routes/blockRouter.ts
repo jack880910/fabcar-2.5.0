@@ -37,15 +37,15 @@ router.post('/getHistoryForCar', function (req: Request, res: Response) {
 });
 
 router.post('/createCar', function (req: Request, res: Response) {
-    let key: string = req.body.key;
+    let carNumber: string = req.body.key;
     let name: string = req.body.name;
     let birthday: string = req.body.birthday;
     let vaccine_name: string = req.body.vaccine_name;
-    let vaccine_bathNumber: string = req.body.vaccine_bathNumber;
+    let vaccine_batchNumber: string = req.body.vaccine_batchNumber;
     let vaccination_date: string = req.body.vaccination_date;
     let vaccination_org: string = req.body.vaccination_org;
 
-    fabric_client.createCar(key, name, birthday, vaccine_name, vaccine_bathNumber, vaccination_date, vaccination_org).then((result: string) => {
+    fabric_client.createCar(carNumber, name, birthday, vaccine_name, vaccine_batchNumber, vaccination_date, vaccination_org).then((result: string) => {
         res.end(result);
     });
 });

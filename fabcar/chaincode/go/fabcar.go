@@ -38,13 +38,13 @@ type QueryResult struct {
 // InitLedger adds a base set of cars to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	cars := []Car{
-		Car{Name: "江祐民", Birthday: "1999-09-10", Vaccine_name: "Moderna COVID-19 Vaccine", Vaccine_batchNumber: "a123456", Vaccination_date: "2021-01-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
-		Car{Name: "王小名", Birthday: "1989-09-10", Vaccine_name: "Pfizer-BioNTech COVID-19 Vaccine", Vaccine_batchNumber: "b123456", Vaccination_date: "2021-08-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
+		Car{Name: "江祐民", Birthday: "男", Vaccine_name: "Moderna COVID-19 Vaccine", Vaccine_batchNumber: "a123456", Vaccination_date: "2021-01-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
+		Car{Name: "王小花", Birthday: "女", Vaccine_name: "Pfizer-BioNTech COVID-19 Vaccine", Vaccine_batchNumber: "b123456", Vaccination_date: "2021-08-01", Vaccination_org: "CDC_Gov_of_Taiwan"},
 	}
 
 	for i, car := range cars {
 		carAsBytes, _ := json.Marshal(car)
-		err := ctx.GetStub().PutState("user"+strconv.Itoa(i), carAsBytes)
+		err := ctx.GetStub().PutState("F12345678"+strconv.Itoa(i), carAsBytes)
 
 		if err != nil {
 			return fmt.Errorf("Failed to put to world state. %s", err.Error())

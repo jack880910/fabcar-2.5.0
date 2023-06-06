@@ -219,7 +219,7 @@ function sendFace(video, canvas) {
 async function main() {
     // require the faceLabel (or login username)
     do {
-        faceLabel = window.prompt('請輸入人臉標籤或身分名稱', '');  // null on cancel or string on confirmation
+        faceLabel = window.prompt('請輸入登錄者身分證號碼', '');  // null on cancel or string on confirmation
         if (faceLabel == null) window.location.assign('/');  // CANCEL: jump to the home
         else faceLabel = faceLabel.trim().toLowerCase();  // CONFIRM
     } while (faceLabel == '');

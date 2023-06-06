@@ -2,6 +2,7 @@
 function createCar() {
     // Important!!!
     document.querySelector("#fabcar-form").addEventListener("submit", function (e) {
+        
         e.preventDefault();    //stop form from submitting
     }, false);
 
@@ -13,6 +14,7 @@ function createCar() {
     var vaccine_batchNumber = document.getElementById("fabcar-vaccine-batchNumber").value.trim();
     var vaccination_date = document.getElementById("fabcar-vaccination-date").value.trim();
     var vaccination_org = document.getElementById("fabcar-vaccination-org").value.trim();
+
 
     if (key == '') {
         alert('請填寫用戶編號！');
@@ -62,7 +64,6 @@ function createCar() {
         } else {
             message = "紀錄新增失敗！";
         }
-        alert(message);
     };
 
     //Send the proper header information along with the request

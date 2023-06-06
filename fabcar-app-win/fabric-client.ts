@@ -8,7 +8,7 @@ const utf8Decoder = new TextDecoder();
 //--------------------------
 
 
-export async function createCar(key: string, name: string, birthday: string, vaccine_name: string, vaccine_bathNumber: string, vaccination_date: string, vaccination_org: string): Promise<string> {
+export async function createCar(carNumber: string, name: string, birthday: string, vaccine_name: string, vaccine_batchNumber: string, vaccination_date: string, vaccination_org: string): Promise<string> {
     // The gRPC client connection should be shared by all Gateway connections to this endpoint.
     const client = await fcb.newGrpcConnection();
     const gateway = await fcb.newGateway(client);
@@ -21,9 +21,9 @@ export async function createCar(key: string, name: string, birthday: string, vac
         const contract = network.getContract(fcb.chaincodeName);
 
         // Create a new car on the ledger.
-        console.log('\n--> Submit Transaction: CreateCar, creates new car with key, make, model, color, and owner');
-
-        await contract.submitTransaction('createCar', key, name, birthday, vaccine_name, vaccine_bathNumber, vaccination_date, vaccination_org);
+        console.log('\n--> Submit Transaction: CreateCar, creates new car with carNumber, name, birthday, vaccine_name, vaccine_batchNumber, vaccination_date, vaccination_org');
+        
+        await contract.submitTransaction('createCar', carNumber, name, birthday, vaccine_name, vaccine_batchNumber, vaccination_date, vaccination_org);
 
         console.log('*** Transaction committed successfully');
         return "SUCCESS";

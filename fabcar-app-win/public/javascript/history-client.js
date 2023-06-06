@@ -49,10 +49,12 @@ function getHistoryForCar() {
         for (var i = 0; i < obj.length; i++) {
 			html += '<tr>' +
             '<td>' + key + '</td>' +
-            '<td>' + obj[i].Value.colour + '</td>' +
-            '<td>' + obj[i].Value.make + '</td>' +
-            '<td>' + obj[i].Value.model + '</td>' +
-            '<td>' + obj[i].Value.owner + '</td>' +
+            '<td>' + obj[i].Value.name + '</td>' +
+            '<td>' + obj[i].Value.birthday + '</td>' +
+            '<td>' + obj[i].Value.vaccine_name + '</td>' +
+            '<td>' + obj[i].Value.vaccine_batchNumber + '</td>' +
+            '<td>' + obj[i].Value.vaccination_date + '</td>' +
+            '<td>' + obj[i].Value.vaccination_org + '</td>' +
 			'<td>' + obj[i].Timestamp + '</td>' +
 			'<td>' + obj[i].IsDelete + '</td>' +
 			'<td>' + obj[i].TxId + '</td>' +
