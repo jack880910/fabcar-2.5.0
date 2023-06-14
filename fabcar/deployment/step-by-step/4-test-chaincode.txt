@@ -32,9 +32,9 @@ $ peer chaincode query \
 
 $ peer chaincode invoke \
     -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer1.example.com \
+    --ordererTLSHostnameOverride orderer.example.com \
     --tls true \
-    --cafile ${ORDERER1_CA} \
+    --cafile ${ORDERER_CA} \
     -C ${CHANNEL_NAME} \
     -n ${CC_NAME} \
     ${PEER_CONN_PARMS} \
@@ -56,64 +56,6 @@ $ export CORE_PEER_ADDRESS=localhost:9051 && \
   export CORE_PEER_LOCALMSPID="Org2MSP" && \
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA && \
   export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
-
-$ peer chaincode query \
-    -C ${CHANNEL_NAME} \
-    -n ${CC_NAME} \
-    -c '{"Args":["queryCar","CAR9"]}'
-
-###########################################
-### 3. Querying chaincode on peer1.org2 ###
-###      在peer1.org2查詢鏈碼使用結果   ###
-###########################################
-
-$ export CORE_PEER_ADDRESS=localhost:10051 && \
-  export CORE_PEER_LOCALMSPID="Org2MSP" && \
-  export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORG2_CA && \
-  export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
-
-$ peer chaincode query \
-    -C ${CHANNEL_NAME} \
-    -n ${CC_NAME} \
-    -c '{"Args":["queryCar","CAR9"]}'
-
-
-###########################################
-### 4. Querying chaincode on peer1.org1 ###
-###      在peer1.org1查詢鏈碼使用結果   ###
-###########################################
-
-$ export CORE_PEER_ADDRESS=localhost:8051 && \
-  export CORE_PEER_LOCALMSPID="Org2MSP" && \
-  export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORG1_CA && \
-  export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
-
-$ peer chaincode query \
-    -C ${CHANNEL_NAME} \
-    -n ${CC_NAME} \
-    -c '{"Args":["queryCar","CAR9"]}'
-
-
-#####################################################
-### 5. Sending invoke transaction on peer1.org2   ###
-###      在peer1.org2使用鏈碼                      ###
-#####################################################
-
-$ export CORE_PEER_ADDRESS=localhost:10051 && \
-  export CORE_PEER_LOCALMSPID="Org2MSP" && \
-  export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_ORG2_CA && \
-  export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
-
-$ peer chaincode invoke \
-    -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer1.example.com \
-    --tls true \
-    --cafile ${ORDERER1_CA} \
-    -C ${CHANNEL_NAME} \
-    -n ${CC_NAME} \
-    ${PEER_CONN_PARMS} \
-    --waitForEvent \
-    -c '{"function":"changeCarOwner","Args":["CAR9","王英明"]}'
 
 $ peer chaincode query \
     -C ${CHANNEL_NAME} \

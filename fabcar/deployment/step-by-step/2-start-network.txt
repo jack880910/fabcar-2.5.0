@@ -31,21 +31,13 @@ $ DOCKER_SOCK="${SOCK##unix://}"
 
 $ export CHANNEL_NAME=mychannel && \
   export CORE_PEER_TLS_ENABLED=true && \
-  export ORDERER1_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
-  export ORDERER2_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
-  export ORDERER3_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
+  export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
   export PEER0_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt && \
-  export PEER1_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt && \
   export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt && \
-  export PEER1_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt && \
   export ORG1_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp && \
   export ORG2_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp && \
-  export ORDERER1_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt && \
-  export ORDERER1_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.key && \
-  export ORDERER2_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt && \
-  export ORDERER2_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.key && \
-  export ORDERER3_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt && \
-  export ORDERER3_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.key
+  export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt && \
+  export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
 
 
 ##################################################
@@ -95,35 +87,28 @@ $ chmod +x ./organizations/ccp-generate.sh && \
 ###      產生系統通道初始區塊文件         ###
 #############################################
 
-# fabric 2.3.1以後的版本沒有此步驟
-# 目前已不需要創建系統通道
+# fabric 2.3.1沒有此步驟
 
-####################################################################
-### 3-2. Write a genesis block to mychannel.block for the        ###
-###      channel mychannel for profile TwoOrgsApplicationGenesis ###
-###      產生新建應用通道的創世區塊                                ###
-####################################################################
+######################################################################
+### 3-2. Generating channel configuration transaction 'channel.tx' ###
+###      產生新建應用通道的配置交易文件                            ###
+######################################################################
 
 ### Tell the configtxgen tool where to look for the configtx.yaml file that it needs to ingest.
-### $ export FABRIC_CFG_PATH=${PWD}/configtx
-### can also be set by the -configPath flag in the configtxgen command 
+
+$ export FABRIC_CFG_PATH=${PWD}/configtx
 
 $ rm -rf channel-artifacts && mkdir channel-artifacts
 
 $ configtxgen \
-  -profile TwoOrgsApplicationGenesis \
-  -outputBlock ./channel-artifacts/${CHANNEL_NAME}.block \
-  -channelID ${CHANNEL_NAME} \
-  -configPath ./configtx
+    -profile TwoOrgsApplicationGenesis \
+	-outputBlock ./channel-artifacts/${CHANNEL_NAME}.block \
+	-channelID $CHANNEL_NAME
 
 
 ############################################
 ### 4. 啟動Orderer節點、Peer節點的容器   ###
 ############################################
-
-### path to the orderer.yaml and core.yaml
-
-$ export FABRIC_CFG_PATH=../config
 
 $ COMPOSE_FILES="-f compose/${COMPOSE_FILE_BASE} -f compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_BASE}"
 
@@ -136,12 +121,8 @@ $ docker ps -a --format="table {{.ID}}\t{{.Names}}\t{{.Status}}"
 
 #######################################
 ###     5. Creating channel         ###
-###          建立應用通道            ###
+###          建立應用通道           ###
 #######################################
-
-# 在無系統通道的情況下使用osnadmin創建應用通道
-# Join an Ordering Service Node (OSN) to a channel. 
-# If the channel does not yet exist, it will be created.
 
 $ export CORE_PEER_ADDRESS=localhost:7051 && \
   export CORE_PEER_LOCALMSPID="Org1MSP" && \
@@ -151,42 +132,19 @@ $ export CORE_PEER_ADDRESS=localhost:7051 && \
 $ export FABRIC_CFG_PATH=../config
 
 
-# 將orderer1.example.com加入應用通道mychannel中 (admin port 7053:7053)
-
 $ osnadmin channel join \
-  --channelID $CHANNEL_NAME \
-  --config-block ./channel-artifacts/${CHANNEL_NAME}.block \
-  -o localhost:7053 \
-  --ca-file "$ORDERER1_CA" \
-  --client-cert "$ORDERER1_ADMIN_TLS_SIGN_CERT" \
-  --client-key "$ORDERER1_ADMIN_TLS_PRIVATE_KEY"
+    --channelID $CHANNEL_NAME \
+	--config-block ./channel-artifacts/${CHANNEL_NAME}.block \
+	-o localhost:7053 \
+	--ca-file "$ORDERER_CA" \
+	--client-cert "$ORDERER_ADMIN_TLS_SIGN_CERT" \
+	--client-key "$ORDERER_ADMIN_TLS_PRIVATE_KEY"
 
 
-# 將orderer2.example.com加入應用通道mychannel中 (admin port 8053:7053)
-
-$ osnadmin channel join \
-  --channelID $CHANNEL_NAME \
-  --config-block ./channel-artifacts/${CHANNEL_NAME}.block \
-  -o localhost:8053 \
-  --ca-file "$ORDERER2_CA" \
-  --client-cert "$ORDERER2_ADMIN_TLS_SIGN_CERT" \
-  --client-key "$ORDERER2_ADMIN_TLS_PRIVATE_KEY"
-
-
-# 將orderer3.example.com加入應用通道mychannel中 (admin port 9053:7053)
-
-$ osnadmin channel join \
-  --channelID $CHANNEL_NAME \
-  --config-block ./channel-artifacts/${CHANNEL_NAME}.block \
-  -o localhost:9053 \
-  --ca-file "$ORDERER3_CA" \
-  --client-cert "$ORDERER3_ADMIN_TLS_SIGN_CERT" \
-  --client-key "$ORDERER3_ADMIN_TLS_PRIVATE_KEY"
-
-
-#########################################
-### 6. Joining the peer to a channel  ###
-#########################################
+#######################################
+###     6. Joining channel          ###
+###          加入應用通道           ###
+#######################################
 
 ###############################################
 ### 6-1. 將peer0.org1.example.com加入通道   ###
@@ -197,48 +155,17 @@ $ export CORE_PEER_ADDRESS=localhost:7051 && \
   export CORE_PEER_TLS_ROOTCERT_FILE=${PEER0_ORG1_CA} && \
   export CORE_PEER_MSPCONFIGPATH=${ORG1_MSPCONFIGPATH}
 
-$ export FABRIC_CFG_PATH=$PWD/../config/
-
-$ peer channel join -b ./channel-artifacts/${CHANNEL_NAME}.block
-
-###############################################
-### 6-2. 將peer1.org1.example.com加入通道   ###
-###############################################
-
-$ export CORE_PEER_ADDRESS=localhost:8051 && \
-  export CORE_PEER_LOCALMSPID="Org1MSP" && \
-  export CORE_PEER_TLS_ROOTCERT_FILE=${PEER1_ORG1_CA} && \
-  export CORE_PEER_MSPCONFIGPATH=${ORG1_MSPCONFIGPATH}
-
-$ export FABRIC_CFG_PATH=$PWD/../config/
-
 $ peer channel join -b ./channel-artifacts/${CHANNEL_NAME}.block
 
 
 ###############################################
-### 6-3. 將peer0.org2.example.com加入通道   ###
+### 6-2. 將peer0.org2.example.com加入通道   ###
 ###############################################
 
 $ export CORE_PEER_ADDRESS=localhost:9051 && \
   export CORE_PEER_LOCALMSPID="Org2MSP" && \
   export CORE_PEER_TLS_ROOTCERT_FILE=${PEER0_ORG2_CA} && \
   export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
-
-$ export FABRIC_CFG_PATH=$PWD/../config/
-
-$ peer channel join -b ./channel-artifacts/${CHANNEL_NAME}.block
-
-
-###############################################
-### 6-4. 將peer1.org2.example.com加入通道   ###
-###############################################
-
-$ export CORE_PEER_ADDRESS=localhost:10051 && \
-  export CORE_PEER_LOCALMSPID="Org2MSP" && \
-  export CORE_PEER_TLS_ROOTCERT_FILE=${PEER1_ORG2_CA} && \
-  export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
-
-$ export FABRIC_CFG_PATH=$PWD/../config/
 
 $ peer channel join -b ./channel-artifacts/${CHANNEL_NAME}.block
 
@@ -272,21 +199,13 @@ $ docker exec -it -e LINES=$(tput lines) -e COLUMNS=$(tput cols) cli bash
 
 $ export CHANNEL_NAME=mychannel && \
   export CORE_PEER_TLS_ENABLED=true && \
-  export ORDERER1_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer1.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
-  export ORDERER2_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
-  export ORDERER3_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
+  export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && \
   export PEER0_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt && \
-  export PEER1_ORG1_CA=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt && \
   export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt && \
-  export PEER1_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt && \
   export ORG1_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp && \
   export ORG2_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp && \
-  export ORDERER1_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt && \
-  export ORDERER1_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.key && \
-  export ORDERER2_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt && \
-  export ORDERER2_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.key && \
-  export ORDERER3_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt && \
-  export ORDERER3_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.key
+  export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt && \
+  export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
 
 
 $ export CORE_PEER_ADDRESS=peer0.org1.example.com:7051 && \
@@ -296,15 +215,15 @@ $ export CORE_PEER_ADDRESS=peer0.org1.example.com:7051 && \
 
 
 $ peer channel fetch config config_block.pb \
-    -o orderer1.example.com:7050 \
-    --ordererTLSHostnameOverride orderer1.example.com \
+    -o orderer.example.com:7050 \
+    --ordererTLSHostnameOverride orderer.example.com \
     -c $CHANNEL_NAME \
     --tls \
-    --cafile "$ORDERER1_CA"
+    --cafile "$ORDERER_CA"
 
 $ configtxlator proto_decode \
     --input config_block.pb \
-    --type common.Block | jq .data.data[0].payload.data.config >"${CORE_PEER_LOCALMSPID}config.json"
+	--type common.Block | jq .data.data[0].payload.data.config >"${CORE_PEER_LOCALMSPID}config.json"
 
 # for org1
 
@@ -312,6 +231,7 @@ $ HOST="peer0.org1.example.com" && \
   PORT=7051
 
 $ jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
+
 
 $ ORIGINAL=${CORE_PEER_LOCALMSPID}config.json && \
   MODIFIED=${CORE_PEER_LOCALMSPID}modified_config.json && \
@@ -335,12 +255,12 @@ $ configtxlator proto_encode --input config_update_in_envelope.json --type commo
 #############################
 
 $ peer channel update \
-  -o orderer1.example.com:7050 \
-  --ordererTLSHostnameOverride orderer1.example.com \
-  -c ${CHANNEL_NAME} \
-  -f ${CORE_PEER_LOCALMSPID}anchors.tx \
-  --tls \
-  --cafile "${ORDERER1_CA}"
+    -o orderer.example.com:7050 \
+	--ordererTLSHostnameOverride orderer.example.com \
+	-c $CHANNEL_NAME \
+	-f ${CORE_PEER_LOCALMSPID}anchors.tx \
+	--tls \
+	--cafile "$ORDERER_CA"
 
 
 ###########################################################################
@@ -353,29 +273,31 @@ $ peer channel update \
 ### A. create anchor-peer update ###
 ####################################
 
-$ export CORE_PEER_ADDRESS=peer0.org2.example.com:7051 && \
+$ export CORE_PEER_ADDRESS=peer0.org2.example.com:9051 && \
   export CORE_PEER_LOCALMSPID="Org2MSP" && \
   export CORE_PEER_TLS_ROOTCERT_FILE=${PEER0_ORG2_CA} && \
   export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
 
+
 $ peer channel fetch config config_block.pb \
-  -o orderer1.example.com:7050 \
-	--ordererTLSHostnameOverride orderer1.example.com \
-	-c ${CHANNEL_NAME} \
+    -o orderer.example.com:7050 \
+	--ordererTLSHostnameOverride orderer.example.com \
+	-c $CHANNEL_NAME \
 	--tls \
-	--cafile "${ORDERER1_CA}"
+	--cafile "$ORDERER_CA"
 
 $ configtxlator proto_decode \
-  --input config_block.pb \
-  --type common.Block | jq .data.data[0].payload.data.config >"${CORE_PEER_LOCALMSPID}config.json"
+    --input config_block.pb \
+	--type common.Block | jq .data.data[0].payload.data.config >"${CORE_PEER_LOCALMSPID}config.json"
 
 
 # for org2
 
 $ HOST="peer0.org2.example.com" && \
-  PORT=7051
+  PORT=9051
 
 $ jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
+
 
 $ ORIGINAL=${CORE_PEER_LOCALMSPID}config.json && \
   MODIFIED=${CORE_PEER_LOCALMSPID}modified_config.json && \
@@ -399,12 +321,12 @@ $ configtxlator proto_encode --input config_update_in_envelope.json --type commo
 #############################
 
 $ peer channel update \
-  -o orderer1.example.com:7050 \
-  --ordererTLSHostnameOverride orderer1.example.com \
-  -c ${CHANNEL_NAME} \
-  -f ${CORE_PEER_LOCALMSPID}anchors.tx \
-  --tls \
-  --cafile "${ORDERER1_CA}"
+    -o orderer.example.com:7050 \
+	--ordererTLSHostnameOverride orderer.example.com \
+	-c $CHANNEL_NAME \
+	-f ${CORE_PEER_LOCALMSPID}anchors.tx \
+	--tls \
+	--cafile "$ORDERER_CA"
 
 
 # 離開cli容器

@@ -1,5 +1,5 @@
 ---
-name: mycc-org${ORG}
+name: test-network-org${ORG}
 version: 1.0.0
 client:
   organization: Org${ORG}
@@ -7,129 +7,29 @@ client:
     timeout:
       peer:
         endorser: '300'
-  credentialStore:
-    path: "/tmp/hfc-kvs/org1"
-    cryptoStore:
-      path: "/tmp/hfc-cvs/org1"
-    wallet: wallet
-
-channels:
-  mychannel:
-    orderers:
-      - orderer1.example.com
-      - orderer2.example.com
-      - orderer3.example.com
-    peers:
-      peer0.org1.example.com:
-        endorsingPeer: true
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: true
-      peer1.org1.example.com:
-        endorsingPeer: true
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: true
-      peer0.org2.example.com:
-        endorsingPeer: true
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: true
-      peer1.org2.example.com:
-        endorsingPeer: true
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: true
-    chaincodes:
-      - mycc:1.0
-
 organizations:
-  Org1:
-    mspid: Org1MSP
+  Org${ORG}:
+    mspid: Org${ORG}MSP
     peers:
-      - peer0.org1.example.com
-      - peer1.org1.example.com
+    - peer0.org${ORG}.example.com
     certificateAuthorities:
-      - ca.org1.example.com
-  Org2:
-    mspid: Org2MSP
-    peers:
-      - peer0.org2.example.com
-      - peer1.org2.example.com
-    certificateAuthorities:
-      - ca.org2.example.com
-
-orderers:
-  orderer1.example.com:
-    url: grpcs://localhost:7050
-    # these are standard properties defined by the gRPC library
-    # they will be passed in as-is to gRPC client constructor
-    grpcOptions:
-      ssl-target-name-override: orderer1.example.com
-      # grpc-max-send-message-length: 4194304
-    tlsCACerts:
-      pem: |
-        ${PEM_ORDERER}
-  orderer2.example.com:
-    url: grpcs://localhost:8050
-    grpcOptions:
-      ssl-target-name-override: orderer2.example.com
-      # grpc-max-send-message-length: 4194304
-    tlsCACerts:
-      pem: |
-        ${PEM_ORDERER}
-  orderer3.example.com:
-    url: grpcs://localhost:9050
-    grpcOptions:
-      ssl-target-name-override: orderer3.example.com
-      # grpc-max-send-message-length: 4194304
-    tlsCACerts:
-      pem: |
-        ${PEM_ORDERER}
-
+    - ca.org${ORG}.example.com
 peers:
-  peer0.org1.example.com:
-    url: grpcs://localhost:7051
+  peer0.org${ORG}.example.com:
+    url: grpcs://localhost:${P0PORT}
     tlsCACerts:
       pem: |
-        ${PEM_ORG1}
+          ${PEERPEM}
     grpcOptions:
-      ssl-target-name-override: peer0.org1.example.com
-      hostnameOverride: peer0.org1.example.com
-  peer1.org1.example.com:
-    url: grpcs://localhost:8051
-    tlsCACerts:
-      pem: |
-        ${PEM_ORG1}
-    grpcOptions:
-      ssl-target-name-override: peer1.org1.example.com
-      hostnameOverride: peer1.org1.example.com
-  peer0.org2.example.com:
-    url: grpcs://localhost:9051
-    tlsCACerts:
-      pem: |
-        ${PEM_ORG2}
-    grpcOptions:
-      ssl-target-name-override: peer0.org2.example.com
-      hostnameOverride: peer0.org2.example.com
-  peer1.org2.example.com:
-    url: grpcs://localhost:10051
-    tlsCACerts:
-      pem: |
-        ${PEM_ORG2}
-    grpcOptions:
-      ssl-target-name-override: peer1.org2.example.com
-      hostnameOverride: peer1.org2.example.com
-
+      ssl-target-name-override: peer0.org${ORG}.example.com
+      hostnameOverride: peer0.org${ORG}.example.com
 certificateAuthorities:
   ca.org${ORG}.example.com:
-    url: https://${IP_CA}:${PORT_CA}
+    url: https://localhost:${CAPORT}
     caName: ca-org${ORG}
     tlsCACerts:
-      pem: |
-        ${PEM_CA}
+      pem: 
+        - |
+          ${CAPEM}
     httpOptions:
       verify: false
-    registrar:
-      - enrollId: admin
-        enrollSecret: adminpw

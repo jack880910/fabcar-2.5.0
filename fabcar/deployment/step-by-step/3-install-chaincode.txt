@@ -66,26 +66,9 @@ $ peer lifecycle chaincode package ${CC_NAME}.tar.gz \
 	
 $ peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
-
-##################################################
-### 3-2. 將鏈碼安裝到 peer1.org1.example.com   ###
-##################################################
-
-$ export CORE_PEER_ADDRESS=localhost:8051 && \
-  export CORE_PEER_LOCALMSPID="Org1MSP" && \
-  export CORE_PEER_TLS_ROOTCERT_FILE=${PEER1_ORG1_CA} && \
-  export CORE_PEER_MSPCONFIGPATH=${ORG1_MSPCONFIGPATH}
-
-$ peer lifecycle chaincode package ${CC_NAME}.tar.gz \
-    --path ${CC_SRC_PATH} \
-    --lang ${CC_RUNTIME_LANGUAGE} \
-    --label ${CC_NAME}_${CC_VERSION}
 	
-$ peer lifecycle chaincode install ${CC_NAME}.tar.gz
-
-
 ##################################################
-### 3-3. 將鏈碼安裝到 peer0.org2.example.com   ###
+### 3-2. 將鏈碼安裝到 peer0.org2.example.com   ###
 ##################################################
 
 $ export CORE_PEER_ADDRESS=localhost:9051 && \
@@ -93,34 +76,21 @@ $ export CORE_PEER_ADDRESS=localhost:9051 && \
   export CORE_PEER_TLS_ROOTCERT_FILE=${PEER0_ORG2_CA} && \
   export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
 
-$ peer lifecycle chaincode package ${CC_NAME}.tar.gz \
-    --path ${CC_SRC_PATH} \
-    --lang ${CC_RUNTIME_LANGUAGE} \
-    --label ${CC_NAME}_${CC_VERSION}
-
-$ peer lifecycle chaincode install ${CC_NAME}.tar.gz
-
-
-##################################################
-### 3-4. 將鏈碼安裝到 peer1.org2.example.com   ###
-##################################################
-
-$ export CORE_PEER_ADDRESS=localhost:10051 && \
-  export CORE_PEER_LOCALMSPID="Org2MSP" && \
-  export CORE_PEER_TLS_ROOTCERT_FILE=${PEER1_ORG2_CA} && \
-  export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
+### Package the chaincode and write the package to a file.
 
 $ peer lifecycle chaincode package ${CC_NAME}.tar.gz \
     --path ${CC_SRC_PATH} \
     --lang ${CC_RUNTIME_LANGUAGE} \
     --label ${CC_NAME}_${CC_VERSION}
+
+### Install the chaincode on a peer.
 
 $ peer lifecycle chaincode install ${CC_NAME}.tar.gz
 
 
 ################################################################
 ### 4. Approve the chaincode definition for my organization. ###
-### 每個組織只要選擇一個peer來執行即可                         ###
+### 每個組織只要選擇一個peer來執行即可                       ###
 ### 以peer0.org1.example.com為例                             ###
 ################################################################
 
@@ -145,9 +115,9 @@ $ echo ${PACKAGE_ID}
 
 $ peer lifecycle chaincode approveformyorg \
     -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer1.example.com \
+    --ordererTLSHostnameOverride orderer.example.com \
     --tls \
-    --cafile ${ORDERER1_CA} \
+    --cafile ${ORDERER_CA} \
     --channelID ${CHANNEL_NAME} \
     --name ${CC_NAME} \
     --version ${CC_VERSION} \
@@ -178,17 +148,21 @@ $ export CORE_PEER_ADDRESS=localhost:9051 && \
   export CORE_PEER_TLS_ROOTCERT_FILE=${PEER0_ORG2_CA} && \
   export CORE_PEER_MSPCONFIGPATH=${ORG2_MSPCONFIGPATH}
 
+### Query the installed chaincodes on a peer.
+
 $ peer lifecycle chaincode queryinstalled >&log.txt
 
 $ PACKAGE_ID=`sed -n '/Package/{s/^Package ID: //; s/, Label:.*$//; p;}' log.txt`
 
 $ echo ${PACKAGE_ID}
 
+### Approve the chaincode definition for my organization.
+
 $ peer lifecycle chaincode approveformyorg \
     -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer1.example.com \
+    --ordererTLSHostnameOverride orderer.example.com \
     --tls \
-    --cafile ${ORDERER1_CA} \
+    --cafile ${ORDERER_CA} \
     --channelID ${CHANNEL_NAME} \
     --name ${CC_NAME} \
     --version ${CC_VERSION} \
@@ -197,6 +171,8 @@ $ peer lifecycle chaincode approveformyorg \
     ${INIT_REQUIRED} \
     --waitForEvent \
     ${CC_END_POLICY}
+
+### Check whether a chaincode definition is ready to be committed on a channel.
 
 $ peer lifecycle chaincode checkcommitreadiness \
     --channelID ${CHANNEL_NAME} \
@@ -234,9 +210,9 @@ $ peer lifecycle chaincode checkcommitreadiness \
 
 $ peer lifecycle chaincode commit \
     -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer1.example.com \
+    --ordererTLSHostnameOverride orderer.example.com \
     --tls true \
-    --cafile ${ORDERER1_CA} \
+    --cafile ${ORDERER_CA} \
     --channelID ${CHANNEL_NAME} \
     --name ${CC_NAME} \
     --version ${CC_VERSION} \
@@ -267,10 +243,10 @@ $ export CORE_PEER_ADDRESS=localhost:7051 && \
 
 $ peer chaincode invoke \
     -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer1.example.com \
+    --ordererTLSHostnameOverride orderer.example.com \
     --isInit \
     --tls true \
-    --cafile ${ORDERER1_CA} \
+    --cafile ${ORDERER_CA} \
     -C ${CHANNEL_NAME} \
     -n ${CC_NAME} \
     ${PEER_CONN_PARMS} \

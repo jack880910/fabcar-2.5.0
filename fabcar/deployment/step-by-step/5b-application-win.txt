@@ -21,22 +21,46 @@
 
 
 #########################################
-### Step 2: launch the application
+### Step 2: modules/packages installation
 #########################################
 
-1. [***關鍵步驟***] 在Oracle VM VirtualBox中設定虛擬機的連接埠轉送(主機 <--> 客體)
+# 在 fabcar-app-win 目錄中執行下列指令：
+
+# 刪除 node_modules, tsconfig.json, package.json, package-lock.json
+
+$ tsc --init
+
+$ npm init -y
+
+$ npm i --save-dev @tsconfig/node14 @tsconfig/node16 @tsconfig/node18
+
+$ npm install --save @hyperledger/fabric-gateway
+
+$ npm i @vladmandic/pilogger
+
+$ npm i express cookie-parser express-session morgan pug
+
+$ npm i --save-dev @types/express @types/cookie-parser @types/express-session @types/morgan @types/pug
+
+
+#########################################
+### Step 3: launch the application
+#########################################
+
+# 在虛擬機(Ubuntu端)運行區塊鏈網路，並在主機端(Windows端)運行應用程式的作法：
+
+1. 在Oracle VM VirtualBox中設定虛擬機的連接埠轉送(主機 <--> 客體)
    192.168.56.1:7051 <--> 10.0.2.15:7051
 
-2. 啟動虛擬機建立區塊鏈網路(已完成)
+2. 啟動虛擬機建立區塊鏈網路
     (a) 在Oracle VM VirtualBox中啟動虛擬機
-    (b) 依照 fabcar/deployment/1-build-project.txt 建立專案
-    (c) 依照 fabcar/deployment/2-start-network.txt 啟動區塊鏈網路
-	(d) 依照 fabcar/deployment/3-install-chaincode.txt 安裝鏈碼
+    (b) 依照 fabcar/deployment/using-script/1-build-project.txt 建立專案
+    (c) 依照 fabcar/deployment/using-script/2-start-network.txt 啟動區塊鏈網路
 	   
-3. [***關鍵步驟***] 使用WinSCP將虛擬機(Ubuntu端)中的 ~/fabric-proj/fabcar/network/organizations/peerOrganizations/org1.example.com
+3. 使用WinSCP將虛擬機(Ubuntu端)中的 ~/fabric-proj/fabcar/network/organizations/peerOrganizations/org1.example.com
    複製到主機(Windows端)中的 fabcar-app-win/crypto/
    
-4. 修改fabric-client-base.ts (已完成)
+4. 修改fabric-client-base.ts
     (下列兩項在本範例中已修改完成，無須再做修改)
     (a) 將 export const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', 'network', 'organizations', 'peerOrganizations', 'org1.example.com'));
         修改為 export const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, 'crypto', 'org1.example.com'));
@@ -47,8 +71,6 @@
 
 6. 在主機端fabcar-app-win中使用Terminal執行下列指令：
 
-    $ npm install
-	
-    $ ts-node app.ts
+   $ ts-node app.ts
 
 7. 開啟瀏覽器並在網址列輸入 http://localhost:8080/
