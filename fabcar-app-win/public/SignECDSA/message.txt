@@ -1,0 +1,4 @@
+數位簽章中文測試文件
+This is a message for digital signature testing.
+1234567890~!@#$%^&*()_-+={}[]:";'<>?,./
+ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏ

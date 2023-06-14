@@ -3,22 +3,52 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Hyperledger Fabric 2.5.0: FabCar Demo</title>
+    <title>區塊鏈疫苗施打證明系統</title>
     <meta name="keywords" content="Hyperledger Fabric 2.5.0, Blockchain, CA, CouchDB, FabCar">
 
 </head>
 
+<style>
+    h1 {
+        text-align: center;
+    }
+    body {
+        background-color: #C4E1FF;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+    }
+    .container {
+      text-align: center;
+    }
+    .image {
+      display: inline-block;
+      margin: 20px;
+    }
+</style>
+
 <body>
-    <h1>Hyperledger Fabric 2.5.0: FabCar Demo</h1>
+    <h1>區塊鏈疫苗施打證明系統</h1>
+    <h1>請選擇登入身分</h1>
     <br>
-    <h2>功能選單</h2>
-    <ul>
-        <li><a href="invoke.html">新增施打紀錄</a></li>
-        <li><a href="query.html">查詢最近施打紀錄</a></li>
-        <li><a href="history.html">查詢歷史施打紀錄</a></li>
-        <li><a href="webcam-register.html">人臉登錄</a></li>
-        <li><a href="webcam-verify.html">人臉驗證</a></li>
-    </ul>
+    <div class="container">
+        <div class="image">
+          <a href="healthorg-signin.html">
+            <img src="/images/healthorg.png" alt="衛生醫療機構">
+          </a>
+          <p>衛生醫療機構</p>
+        </div>
+        <div class="image">
+          <a href="qrcode-verify.html">
+            <img src="/images/verifier.png" alt="查驗者">
+          </a>
+          <p>查驗者</p>
+        </div>
+      </div>
 </body>
 
 </html>

@@ -55,9 +55,9 @@ function getHistoryForCar() {
             '<td>' + obj[i].Value.vaccine_batchNumber + '</td>' +
             '<td>' + obj[i].Value.vaccination_date + '</td>' +
             '<td>' + obj[i].Value.vaccination_org + '</td>' +
-			'<td>' + obj[i].Timestamp + '</td>' +
-			'<td>' + obj[i].IsDelete + '</td>' +
-			'<td>' + obj[i].TxId + '</td>' +
+			// '<td>' + obj[i].Timestamp + '</td>' +
+			// '<td>' + obj[i].IsDelete + '</td>' +
+			// '<td>' + obj[i].TxId + '</td>' +
             '</tr>';
 		}
         tbody.innerHTML = html;

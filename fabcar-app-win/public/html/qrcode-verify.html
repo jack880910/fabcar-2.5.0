@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QR Code Scanner</title>
+  <meta charset="utf-8">
+  <style>
+    #video {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    #output {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>QR Code Scanner</h1>
+  <video id="video" playsinline></video>
+  <div id="output"></div>
+
+  <script src="https://rawgit.com/dwa012/html5-qrcode/master/html5-qrcode.min.js"></script>
+  <script>
+    // 取得攝像頭影像並進行QR Code掃描
+    function startQRCodeScanner() {
+      var video = document.getElementById('video');
+      var outputDiv = document.getElementById('output');
+
+      // 初始化HTML5 QR Code庫
+      var html5QrcodeScanner = new Html5QrcodeScanner(
+        'video',
+        { fps: 10, qrbox: 250 },
+        /* success callback */ function (qrCodeMessage) {
+          // 成功掃描到QR Code後的處理函式
+          outputDiv.innerText = qrCodeMessage;
+        },
+        /* failure callback */ function (errorMessage) {
+          // 錯誤處理函式
+          console.log(errorMessage);
+        }
+      );
+
+      // 啟動攝像頭並開始QR Code掃描
+      html5QrcodeScanner.start();
+    }
+
+    // 在頁面載入完成後開始QR Code掃描
+    window.onload = function () {
+      startQRCodeScanner();
+    };
+  </script>
+</body>
+</html>

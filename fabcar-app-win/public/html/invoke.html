@@ -6,10 +6,11 @@
     <meta charset="utf-8">
     <meta name="keywords" content="Hyperledger Fabric 2.5.0, Blockchain, CA, CouchDB, FabCar">
     <script language="javascript" src="/javascript/invoke-client.js"></script>
+
 </head>
 
 <body>
-    <p>請填寫下列表單新增車輛</p>
+    <p>請填寫下列表單新增施打紀錄</p>
     <form id="fabcar-form">
         <p><input type="text" id="fabcar-key" placeholder="身分證號碼" autofocus></p>
         <p><input type="text" id="fabcar-name" placeholder="姓名"></p>
@@ -17,12 +18,18 @@
         <p><input type="text" id="fabcar-vaccine-name" placeholder="疫苗名稱"></p>
         <p><input type="text" id="fabcar-vaccine-batchNumber" placeholder="疫苗批次號碼"></p>
         <p><input type="text" id="fabcar-vaccination-date" placeholder="施打日期"></p>
-        <p><input type="text" id="fabcar-vaccination-org" placeholder="執行者"></p>
+        <p type="text" style="font-size: 14px;">執行者</p>
+        <p><input type="text" id="fabcar-vaccination-org"></p>
         <p>
             <input type="reset" value="清除">
             <input id="submit-fabcar" type="submit" value="送出" onclick="javascript:createCar();">
         </p>
     </form>
 </body>
+<script>
+    document.getElementById("fabcar-vaccination-org").value = localStorage.getItem("username");
+    console.log(localStorage.getItem("username"));
+</script>
+
 
 </html>

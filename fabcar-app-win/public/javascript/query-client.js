@@ -31,6 +31,43 @@ function queryCar(key) {
             return
         }
 
+        const jsonObject = JSON.parse(result);
+        const signature = jsonObject.signature_org;
+        delete jsonObject.signature_org;
+        const modifiedJsonString = JSON.stringify(jsonObject);
+        console.log("signature: " + signature);
+        console.log("modifiedJsonString: " + modifiedJsonString);
+
+
+        var req2 = new XMLHttpRequest();
+        var action2 = "/verifySignature";
+        var method2 = "POST";
+        var url2 = window.location.protocol + "//" + window.location.host + action2;
+
+        var isVerify = "驗證中...";
+        console.log("isVerify1: " + isVerify);
+
+        req2.open(method2, url2, true);
+        req2.onload = function () {
+            var result2 = this.responseText;
+            if (result2.toLowerCase() == 'false' || result2.trim() == '') {
+                // alert('數位簽章驗證失敗！');
+                // alert(result2);
+                isVerify = "不通過";
+                console.log("isVerify2: " + isVerify);
+                return
+            } if (result2.toLowerCase() == 'true') {
+                isVerify = "通過";
+                console.log("isVerify3: " + isVerify);
+            }
+
+        }
+        req2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        var data2 = "signature=" + signature + "&" +
+            "result=" + modifiedJsonString;
+        req2.send(data2);
+
+
         // 回傳結果範例：
         // {"colour":"blue","docType":"car","make":"Toyota","model":"Prius","owner":"Tomoko"}
         // 處理方式：
@@ -38,11 +75,10 @@ function queryCar(key) {
         // (2) 操作物件：obj.colour, obj.make, obj.model, obj.owner
 
         var obj = JSON.parse(result);  // JSON格式轉換成JavaScript物件obj
-
         // var tbody = document.getElementById("fabcar-tbody");
         var tbody = document.querySelector("#fabcar-table > tbody");
-
-        var html = '<tr>' +
+        setTimeout(() => {
+            var html = '<tr>' +
             '<td>' + key + '</td>' +
             '<td>' + obj.name + '</td>' +
             '<td>' + obj.birthday + '</td>' +
@@ -50,9 +86,15 @@ function queryCar(key) {
             '<td>' + obj.vaccine_batchNumber + '</td>' +
             '<td>' + obj.vaccination_date + '</td>' +
             '<td>' + obj.vaccination_org + '</td>' +
+            '<td>' + isVerify + '</td>' +
             '</tr>';
 
         tbody.innerHTML = html;
+        console.log("isVerify4: " + isVerify);
+        }, 500);
+
+
+
     }
 
     //Send the proper header information along with the request
@@ -90,14 +132,14 @@ function queryAllCars() {
         var html = "";
         for (var i = 0; i < obj.length; i++) {
             html += '<tr>' +
-            '<td>' + obj[i].Key + '</td>' +
-            '<td>' + obj[i].Record.name + '</td>' +
-            '<td>' + obj[i].Record.birthday + '</td>' +
-            '<td>' + obj[i].Record.vaccine_name + '</td>' +
-            '<td>' + obj[i].Record.vaccine_batchNumber + '</td>' +
-            '<td>' + obj[i].Record.vaccination_date + '</td>' +
-            '<td>' + obj[i].Record.vaccination_org + '</td>' +
-            '</tr>';
+                '<td>' + obj[i].Key + '</td>' +
+                '<td>' + obj[i].Record.name + '</td>' +
+                '<td>' + obj[i].Record.birthday + '</td>' +
+                '<td>' + obj[i].Record.vaccine_name + '</td>' +
+                '<td>' + obj[i].Record.vaccine_batchNumber + '</td>' +
+                '<td>' + obj[i].Record.vaccination_date + '</td>' +
+                '<td>' + obj[i].Record.vaccination_org + '</td>' +
+                '</tr>';
         }
         tbody.innerHTML = html;
     };

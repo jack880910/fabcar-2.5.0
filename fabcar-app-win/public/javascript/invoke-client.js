@@ -1,4 +1,6 @@
 
+
+
 function createCar() {
     // Important!!!
     document.querySelector("#fabcar-form").addEventListener("submit", function (e) {
@@ -25,7 +27,7 @@ function createCar() {
         document.getElementById("fabcar-name").focus();
         return;
     } else if (birthday == '') {
-        alert('請填寫生日！');
+        alert('請填寫性別！');
         document.getElementById("fabcar-birthday").focus();
         return;
     } else if (vaccine_name == '') {
@@ -58,11 +60,13 @@ function createCar() {
         var message = this.responseText;
         if (this.responseText.toLowerCase() == 'success') {
             message = "紀錄新增成功！";
+            alert(message);
             // reset the form
             document.getElementById("fabcar-form").reset();
             // document.getElementById("fabcar-key").focus();
         } else {
             message = "紀錄新增失敗！";
+            alert(message);
         }
     };
 
