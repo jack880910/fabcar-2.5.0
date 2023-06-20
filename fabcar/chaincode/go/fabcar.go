@@ -29,6 +29,11 @@ type Car struct {
 	Vaccination_org     string `json:"vaccination_org"`
 }
 
+type PubKey struct {
+	Owner     string `json:"owner"`
+	Publickey string `json:"publickey"`
+}
+
 // QueryResult structure used for handling result of query
 type QueryResult struct {
 	Key    string `json:"Key"`
@@ -68,6 +73,36 @@ func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, c
 	carAsBytes, _ := json.Marshal(car)
 
 	return ctx.GetStub().PutState(carNumber, carAsBytes)
+}
+
+// CreatePubKey adds a new pubkey to the world state with given details
+func (s *SmartContract) CreatePubKey(ctx contractapi.TransactionContextInterface, owner string, publickey string) error {
+	pubkey := PubKey{
+		Owner:     owner,
+		Publickey: publickey,
+	}
+
+	pubkeyAsBytes, _ := json.Marshal(pubkey)
+
+	return ctx.GetStub().PutState(owner, pubkeyAsBytes)
+}
+
+// QueryPubKey returns the pubkey stored in the world state with given id
+func (s *SmartContract) QueryPubKey(ctx contractapi.TransactionContextInterface, owner string) (*PubKey, error) {
+	pubkeyAsBytes, err := ctx.GetStub().GetState(owner)
+
+	if err != nil {
+		return nil, fmt.Errorf("Failed to read from world state. %s", err.Error())
+	}
+
+	if pubkeyAsBytes == nil {
+		return nil, fmt.Errorf("%s does not exist", owner)
+	}
+
+	pubkey := new(PubKey)
+	_ = json.Unmarshal(pubkeyAsBytes, pubkey)
+
+	return pubkey, nil
 }
 
 // QueryCar returns the car stored in the world state with given id

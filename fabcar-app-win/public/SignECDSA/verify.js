@@ -14,6 +14,9 @@ export async function verifySignature(signature_org, result) {
     var replacementSymbol = "+";
     var signature_fix = signature_org.replace(/\s/g, replacementSymbol);
     const signature = signature_fix;
+    console.log("原始的簽章: " + signature_org);
+    console.log("取代過+的簽章: " + signature_org.replace(/\s/g, replacementSymbol));
+    console.log("修正中的簽章: " + signature_fix);
     console.log("修正的簽章: " + signature);
 
     // algorithm: 'RSA-SHA256', 'SHA256', 'RSA-SHA1'

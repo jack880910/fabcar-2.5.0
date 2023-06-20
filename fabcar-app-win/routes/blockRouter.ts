@@ -11,6 +11,8 @@ import * as fabric_client from "../fabric-client";
 import { signWithECDSA } from "../public/SignECDSA/sign";
 import { verifySignature } from "../public/SignECDSA/verify";
 const router: Router = Router();
+const fs = require('fs');
+const path = require('path');
 
 // middleware that is specific to this router
 router.use((req: Request, res: Response, next) => {
@@ -21,6 +23,40 @@ router.get("/queryAllCars", function (req: Request, res: Response) {
     fabric_client.queryAllCars().then((result: string) => {
         res.end(result);
     });
+});
+
+router.post("/createPubkey", function (req: Request, res: Response) {
+    try {
+        let key = req.body.key.trim();
+        let owner = "publickey_"+key;
+        let publickey =req.body.publickey.trim();
+        fabric_client.createPubkey(owner, publickey).then((result: string) => {
+            res.end(result);
+            console.log("key:", key);
+            console.log("owner:", owner);
+            console.log("publickey:", publickey);
+            console.log("result:", result);
+        });
+    }
+    catch (error) {
+        res.end("Error occurred");
+        console.error("Error occurred:", error);
+    }
+});
+
+router.post("/queryPubkey", function (req: Request, res: Response) {
+    try {
+        let owner: string = req.body.key.trim();
+        fabric_client.queryPubkey(owner).then((result: string) => {
+            res.end(result);
+            console.log("owner:", owner);
+            console.log("result:", result);
+        });
+    }
+    catch (error) {
+        res.end("Error occurred");
+        console.error("Error occurred:", error);
+    }
 });
 
 router.post("/verifySignature", async function (req: Request, res: Response) {

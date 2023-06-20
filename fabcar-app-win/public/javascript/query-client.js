@@ -91,7 +91,7 @@ function queryCar(key) {
 
         tbody.innerHTML = html;
         console.log("isVerify4: " + isVerify);
-        }, 500);
+        }, 100);
 
 
 
