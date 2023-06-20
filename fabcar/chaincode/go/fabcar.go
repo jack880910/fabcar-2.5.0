@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"strconv"
 	"time"
 
@@ -75,25 +74,19 @@ func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, c
 	return ctx.GetStub().PutState(carNumber, carAsBytes)
 }
 
-// CreatePubKey adds a new pubkey to the world state with given details
-func (s *SmartContract) CreatePubKey(ctx contractapi.TransactionContextInterface, owner string, publickey string) error {
+// CreatePubkey adds a new pubkey to the world state with given details
+func (s *SmartContract) CreatePubkey(ctx contractapi.TransactionContextInterface, owner string, publickey string) error {
 	pubkey := PubKey{
 		Publickey: publickey,
 	}
 
 	pubkeyAsBytes, _ := json.Marshal(pubkey)
 
-	log.Printf("owner: %s", owner)
-	log.Printf("publickey: %s", publickey)
-	log.Printf("ctx: %s", ctx)
-	log.Printf("ctx.GetStub(): %s", ctx.GetStub())
-	log.Printf("ctx.GetStub().PutState(owner, pubkeyAsBytes): %s", ctx.GetStub().PutState(owner, pubkeyAsBytes))
-
 	return ctx.GetStub().PutState(owner, pubkeyAsBytes)
 }
 
-// QueryPubKey returns the pubkey stored in the world state with given id
-func (s *SmartContract) QueryPubKey(ctx contractapi.TransactionContextInterface, owner string) (*PubKey, error) {
+// QueryPubkey returns the pubkey stored in the world state with given id
+func (s *SmartContract) QueryPubkey(ctx contractapi.TransactionContextInterface, owner string) (*PubKey, error) {
 	pubkeyAsBytes, err := ctx.GetStub().GetState(owner)
 
 	if err != nil {
