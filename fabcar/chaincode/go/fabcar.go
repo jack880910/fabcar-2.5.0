@@ -30,7 +30,6 @@ type Car struct {
 }
 
 type PubKey struct {
-	Owner     string `json:"owner"`
 	Publickey string `json:"publickey"`
 }
 
@@ -78,7 +77,6 @@ func (s *SmartContract) CreateCar(ctx contractapi.TransactionContextInterface, c
 // CreatePubKey adds a new pubkey to the world state with given details
 func (s *SmartContract) CreatePubKey(ctx contractapi.TransactionContextInterface, owner string, publickey string) error {
 	pubkey := PubKey{
-		Owner:     owner,
 		Publickey: publickey,
 	}
 
