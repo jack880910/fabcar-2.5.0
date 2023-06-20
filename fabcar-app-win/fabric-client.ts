@@ -50,9 +50,10 @@ export async function createPubkey(owner: string, publickey: string): Promise<st
 
         // Create a new car on the ledger.
         console.log('\n--> Submit Transaction: CreatePubkey, creates new pubkey with owner, publickey');
-        
+        console.log("fac_client_owner:", owner);
+        console.log("fab_client_publickey:", publickey);
         await contract.submitTransaction('createPubkey', owner, publickey);
-
+        
         console.log('*** Transaction committed successfully');
         return "SUCCESS";
     } catch (error) {

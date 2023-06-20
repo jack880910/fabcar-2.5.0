@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 
@@ -81,6 +82,12 @@ func (s *SmartContract) CreatePubKey(ctx contractapi.TransactionContextInterface
 	}
 
 	pubkeyAsBytes, _ := json.Marshal(pubkey)
+
+	log.Printf("owner: %s", owner)
+	log.Printf("publickey: %s", publickey)
+	log.Printf("ctx: %s", ctx)
+	log.Printf("ctx.GetStub(): %s", ctx.GetStub())
+	log.Printf("ctx.GetStub().PutState(owner, pubkeyAsBytes): %s", ctx.GetStub().PutState(owner, pubkeyAsBytes))
 
 	return ctx.GetStub().PutState(owner, pubkeyAsBytes)
 }
