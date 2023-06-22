@@ -42,8 +42,8 @@ type QueryResult struct {
 // InitLedger adds a base set of cars to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	cars := []Car{
-		Car{Name: "江祐民", Birthday: "男", Vaccine_name: "Moderna COVID-19 Vaccine", Vaccine_batchNumber: "a123456", Vaccination_date: "2021-01-01", Vaccination_org: "gov_taiwan"},
-		Car{Name: "王小花", Birthday: "女", Vaccine_name: "Pfizer-BioNTech COVID-19 Vaccine", Vaccine_batchNumber: "b123456", Vaccination_date: "2021-08-01", Vaccination_org: "gov_taiwan"},
+		Car{Name: "YU MIN CHIANG", Birthday: "MALE", Vaccine_name: "Moderna COVID-19 Vaccine", Vaccine_batchNumber: "a123456", Vaccination_date: "2021-01-01", Vaccination_org: "gov_taiwan"},
+		Car{Name: "XIO HUA WANG", Birthday: "FEMALE", Vaccine_name: "Pfizer-BioNTech COVID-19 Vaccine", Vaccine_batchNumber: "b123456", Vaccination_date: "2021-08-01", Vaccination_org: "gov_taiwan"},
 	}
 
 	for i, car := range cars {
