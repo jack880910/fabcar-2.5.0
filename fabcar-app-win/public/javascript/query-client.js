@@ -64,6 +64,7 @@ function queryCar(key) {
         }
         req2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
         var data2 = "signature=" + signature + "&" +
+            "keyowner=" + localStorage.getItem("username") + "&" +
             "result=" + modifiedJsonString;
         req2.send(data2);
 

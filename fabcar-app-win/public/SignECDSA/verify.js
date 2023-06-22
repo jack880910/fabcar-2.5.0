@@ -1,22 +1,54 @@
+import * as fabric_client from "../../fabric-client";
+
+// https://libraries.io/npm/ecdsa-secp256r1
+const ECDSA = require('ecdsa-secp256r1'); // npm install --save ecdsa-secp256r1@latest
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-export async function verifySignature(signature_org, result) {
+export async function verifySignature(keyowner, signature_org, result) {
   try {
-    const keyPath = path.join(__dirname, './key-store/public_key.pem');
-
-    // read the public key, message, and digital signature from files using the UTF-8 encoding
-    const publicKey = fs.readFileSync(keyPath, 'utf-8');
+    var replacementSymbol = "+";
     const message = result;
 
+    const keyobj = await fabric_client.queryPubkey("publickey_" + keyowner);
+    var obj = JSON.parse(keyobj);  // JSON格式轉換成JavaScript物件obj
+    const publicKey_unfix = obj.publickey;
+    const publicKey = publicKey_unfix.replace(/\s/g, replacementSymbol);
+    console.log("publicKey: " + publicKey);
+    console.log("publicKey_fixed: " + publicKey);
+
+
+
+
+    // const pemKey = `-----BEGIN PUBLIC KEY-----\n${publicKey}\n-----END PUBLIC KEY-----`;
+    // console.log("pemKey: " + pemKey);
+
+    // const publicKeyObject = crypto.createPublicKey(pemKey);
+    // console.log("publicKeyObject: " + publicKeyObject);
+
+
+    // // 解碼 Base64 公鑰字串
+    // const publicKeyBuffer = Buffer.from(publicKey, 'base64');
+    // // 建立 KeyObject
+    // const publicKeyObject = crypto.createPublicKey({
+    //   key: publicKeyBuffer,
+    //   format: 'der',
+    //   type: 'spki'
+    // });
+    // // 將 KeyObject 轉換為 PEM 格式
+    // const publicKeyPEM = publicKeyObject.export({ type: 'spki', format: 'pem' });
+    // console.log("publicKKeyPEM:" + publicKeyPEM);
+
+    // const keyPath = path.join(__dirname, './key-store/public_key.pem');
+    // const publicKey = fs.readFileSync(keyPath, 'utf-8');
+    // console.log("publickey" + publicKey);
+
     //處理json字串中的空白字元
-    var replacementSymbol = "+";
+
     var signature_fix = signature_org.replace(/\s/g, replacementSymbol);
     const signature = signature_fix;
     console.log("原始的簽章: " + signature_org);
-    console.log("取代過+的簽章: " + signature_org.replace(/\s/g, replacementSymbol));
-    console.log("修正中的簽章: " + signature_fix);
     console.log("修正的簽章: " + signature);
 
     // algorithm: 'RSA-SHA256', 'SHA256', 'RSA-SHA1'
@@ -29,7 +61,7 @@ export async function verifySignature(signature_org, result) {
     // encoding: 'latin1', 'hex' or 'base64'
     const buf = Buffer.from(signature, 'base64');
     const verified = verifier.verify(publicKey, buf);
-    
+
     console.log(message); // Prints: message
     console.log(publicKey); // Prints: public key
     console.log("驗證的數位簽章:" + signature); // Prints: signature
