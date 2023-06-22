@@ -18,7 +18,15 @@ export async function verifySignature(keyowner, signature_org, result) {
     console.log("publicKey: " + publicKey);
     console.log("publicKey_fixed: " + publicKey);
 
+    // Convert public key string to Buffer
+    const publicKeyBuffer = Buffer.from(publicKey, 'base64');
+    // Create PEM-formatted string
+    const pemPublicKey = `-----BEGIN PUBLIC KEY-----\n${publicKeyBuffer.toString('base64')}\n-----END PUBLIC KEY-----`;
+    // Save PEM public key to file
+    const filePath = path.join(__dirname, './key-store-test/public_key.pem');
 
+    fs.writeFileSync(filePath, pemPublicKey, 'utf-8');
+    console.log(`Public key saved as PEM format at ${filePath}`);
 
 
     // const pemKey = `-----BEGIN PUBLIC KEY-----\n${publicKey}\n-----END PUBLIC KEY-----`;
@@ -60,7 +68,7 @@ export async function verifySignature(keyowner, signature_org, result) {
 
     // encoding: 'latin1', 'hex' or 'base64'
     const buf = Buffer.from(signature, 'base64');
-    const verified = verifier.verify(publicKey, buf);
+    const verified = verifier.verify(pemPublicKey, buf);
 
     console.log(message); // Prints: message
     console.log(publicKey); // Prints: public key

@@ -22,6 +22,12 @@
     #result {
       margin-top: 30px;
     }
+
+    #verifyButton {
+      margin-top: 30px;
+      display: none;
+    }
+
   </style>
 </head>
 <body>
@@ -30,7 +36,9 @@
     <input type="text" id="scanData" placeholder="掃描到的資訊" autofocus>
   </div>
   <div id="result"></div>
-  <script language="javascript" src="/javascript/qrcode-verify.js"></script>
+<button id="verifyButton" onclick="redirectToVerification()">前往驗證</button>
 
+
+  <script language="javascript" src="/javascript/qrcode-verify.js"></script>
 </body>
 </html>
