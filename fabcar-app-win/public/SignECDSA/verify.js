@@ -9,12 +9,13 @@ const path = require('path');
 export async function verifySignature(keyowner, signature_org, result) {
   try {
     var replacementSymbol = "+";
-    const message = result;
+    const verifyData_origin = result.replace(/#/g, "&");
+    const verifyData = verifyData_origin.replace(/!/g, "+");
 
     const keyobj = await fabric_client.queryPubkey("publickey_" + keyowner);
     var obj = JSON.parse(keyobj);  // JSON格式轉換成JavaScript物件obj
     const publicKey_unfix = obj.publickey;
-    const publicKey = publicKey_unfix.replace(/\s/g, replacementSymbol);
+    const publicKey = publicKey_unfix.replace(/ /g, replacementSymbol);
     console.log("publicKey: " + publicKey);
     console.log("publicKey_fixed: " + publicKey);
 
@@ -28,32 +29,11 @@ export async function verifySignature(keyowner, signature_org, result) {
     fs.writeFileSync(filePath, pemPublicKey, 'utf-8');
     console.log(`Public key saved as PEM format at ${filePath}`);
 
-
-    // const pemKey = `-----BEGIN PUBLIC KEY-----\n${publicKey}\n-----END PUBLIC KEY-----`;
-    // console.log("pemKey: " + pemKey);
-
-    // const publicKeyObject = crypto.createPublicKey(pemKey);
-    // console.log("publicKeyObject: " + publicKeyObject);
-
-
-    // // 解碼 Base64 公鑰字串
-    // const publicKeyBuffer = Buffer.from(publicKey, 'base64');
-    // // 建立 KeyObject
-    // const publicKeyObject = crypto.createPublicKey({
-    //   key: publicKeyBuffer,
-    //   format: 'der',
-    //   type: 'spki'
-    // });
-    // // 將 KeyObject 轉換為 PEM 格式
-    // const publicKeyPEM = publicKeyObject.export({ type: 'spki', format: 'pem' });
-    // console.log("publicKKeyPEM:" + publicKeyPEM);
-
     // const keyPath = path.join(__dirname, './key-store/public_key.pem');
-    // const publicKey = fs.readFileSync(keyPath, 'utf-8');
-    // console.log("publickey" + publicKey);
+    // const publicKey2 = fs.readFileSync(keyPath, 'utf-8');
+    // console.log("publickey2" + publicKey2);
 
     //處理json字串中的空白字元
-
     var signature_fix = signature_org.replace(/\s/g, replacementSymbol);
     const signature = signature_fix;
     console.log("原始的簽章: " + signature_org);
@@ -63,16 +43,16 @@ export async function verifySignature(keyowner, signature_org, result) {
     // SHA-256: For RSA keys, the algorithm is RSASSA-PKCS1-v1_5. 
     // SHA-256: For EC keys, the algorithm is ECDSA.
     const verifier = crypto.createVerify('SHA256');
-    verifier.update(message);
+    verifier.update(verifyData);
     verifier.end();
 
     // encoding: 'latin1', 'hex' or 'base64'
     const buf = Buffer.from(signature, 'base64');
     const verified = verifier.verify(pemPublicKey, buf);
 
-    console.log(message); // Prints: message
-    console.log(publicKey); // Prints: public key
-    console.log("驗證的數位簽章:" + signature); // Prints: signature
+    console.log("放入驗證的資料:" + verifyData); // Prints: message
+    console.log("公鑰:" + publicKey); // Prints: public key
+    console.log("驗證用的數位簽章:" + signature); // Prints: signature
     console.log("驗證結果：" + verified); // Prints: true or false
 
     return verified;

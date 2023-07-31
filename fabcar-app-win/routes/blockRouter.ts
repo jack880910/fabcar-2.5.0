@@ -77,9 +77,10 @@ router.post("/queryPubkey", function (req: Request, res: Response) {
 
 router.post("/verifySignature", async function (req: Request, res: Response) {
     try {
-        let signature: string = req.body.signature.trim();
-        let result: string = req.body.result.trim();
         let keyowner: string = req.body.keyowner.trim();
+        let signature: string = req.body.signature;
+        let result: string = req.body.result;
+        console.log("verifyData_router:", result);
         const verifyResult: boolean = await verifySignature(keyowner, signature, result);
         res.send(verifyResult);
         console.log("verifyResult:", verifyResult);

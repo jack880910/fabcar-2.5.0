@@ -1,52 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <script src="/javascript/healthorg-register.js"></script>
   <style>
     .container {
-  text-align: center;
-  margin-top: 100px;
-}
+      text-align: center;
+      margin-top: 100px;
+    }
 
-.input-group {
-  margin-bottom: 20px;
-}
+    body {
+      background-color: #c4e1ff;
+    }
 
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-}
+    .input-group {
+      margin-bottom: 20px;
+    }
 
-.input-group input {
-  width: 200px;
-  padding: 5px;
-}
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
 
-.btn {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
+    .input-group input {
+      width: 200px;
+      padding: 5px;
+    }
 
+    .btn {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h2>醫療機構使用者註冊</h2>
     <form name="loginForm">
       <div class="input-group">
         <label>使用者名稱:</label>
-        <input type="text" name="username">
+        <input type="text" name="username" />
       </div>
       <div class="input-group">
         <label>密碼:</label>
-        <input type="password" name="password">
+        <input type="password" name="password" />
       </div>
-      <input type="submit" value="註冊" class="btn" onclick="javascript:register();">
+      <input type="submit" value="註冊" class="btn" onclick="javascript:register();" />
     </form>
   </div>
-
 </body>
+
 </html>

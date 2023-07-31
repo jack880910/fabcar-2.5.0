@@ -48,7 +48,7 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 
 	for i, car := range cars {
 		carAsBytes, _ := json.Marshal(car)
-		err := ctx.GetStub().PutState("F12345678"+strconv.Itoa(i), carAsBytes)
+		err := ctx.GetStub().PutState("88812345"+strconv.Itoa(i), carAsBytes)
 
 		if err != nil {
 			return fmt.Errorf("Failed to put to world state. %s", err.Error())

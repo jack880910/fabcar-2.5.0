@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const vaccinationOrganization = dataFields[6];
       const dataProviderSignature = dataFields[7];
       const verifierSignature = dataFields[8];
+      const verifyData_origin = dataFields.slice(0, 8).join('#');
+      const verifyData = verifyData_origin.replace(/\+/g, "!");
+      console.log("verifyData1: " + verifyData);
+      localStorage.setItem("userId", id);
+
 
       //確認資料ok後，呼叫verifySignature，最後連驗證結果一起顯示在網頁上
       var req2 = new XMLHttpRequest();
@@ -42,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (result2.toLowerCase() == 'false' || result2.trim() == '') {
           verifyResult = "不通過";
           console.log("verifyResult2: " + verifyResult);
+          console.log("verifyData2: " + verifyData);
           verifyButton.style.display = "none";
         } if (result2.toLowerCase() == 'true') {
           verifyResult = "通過";
@@ -50,23 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       req2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-      var data2 = "signature=" + verifierSignature + "&" +
-        "keyowner=" + id + "&" +
-        "result=" + scanDataInput.value;
+      var data2 = "keyowner=" + id + "&" +
+        "signature=" + verifierSignature + "&" +
+        "result=" + verifyData.toString();
       req2.send(data2);
+      console.log("verifyData3: " + verifyData);
 
-      resultText.innerHTML = `
-        身分證字號：${id}<br>
+      setTimeout(() => {
+        resultText.innerHTML = `
+        護照號碼：${id}<br>
         姓名：${name}<br>
         性別：${gender}<br>
         疫苗名稱：${vaccineName}<br>
         疫苗批次：${batchNumber}<br>
         接種日期：${vaccinationDate}<br>
         施打組織：${vaccinationOrganization}<br>
-        數位簽章驗證結果：${verifyResult}<br>
         資料提供者數位簽章：${dataProviderSignature}<br>
-        驗證者數位簽章：${verifierSignature}
+        驗證者數位簽章：${verifierSignature}<br>
+        數位簽章驗證結果：${verifyResult}<br>
       `;
+      }, 300);
+
     } else {
       resultText.textContent = '掃描到的資料不完整';
       verifyButton.style.display = "none";

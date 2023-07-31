@@ -4,6 +4,7 @@
   <title>QR Code Scanner</title>
   <style>
     body {
+      background-color: #C4E1FF;
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
@@ -23,9 +24,16 @@
       margin-top: 30px;
     }
 
+    /* #verifyButton {
+      margin-top: 30px;
+      display: none;
+    } */
+
     #verifyButton {
       margin-top: 30px;
       display: none;
+      margin-left: auto;
+      margin-right: auto;
     }
 
   </style>
@@ -33,10 +41,10 @@
 <body>
   <h1 id="title">請掃描 QR Code...</h1>
   <div id="input">
-    <input type="text" id="scanData" placeholder="掃描到的資訊" autofocus>
+    <input type="text" id="scanData" placeholder="" autofocus>
   </div>
   <div id="result"></div>
-<button id="verifyButton" onclick="redirectToVerification()">前往驗證</button>
+<button id="verifyButton" onclick="redirectToVerification()">前往人臉驗證</button>
 
 
   <script language="javascript" src="/javascript/qrcode-verify.js"></script>

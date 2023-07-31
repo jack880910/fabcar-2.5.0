@@ -213,11 +213,15 @@ async function setupFaceAPI() {
 
 async function main() {
     // require the faceLabel (or login username)
-    do {
-        faceLabel = window.prompt('請輸入驗證者身分證號碼', '');  // null on cancel or string on confirmation
-        if (faceLabel == null) window.location.assign('/');  // CANCEL: jump to the home
-        else faceLabel = faceLabel.trim().toLowerCase();  // CONFIRM
-    } while (faceLabel == '');
+    // do {
+    //     faceLabel = window.prompt('請輸入驗證者身分證號碼', '');  // null on cancel or string on confirmation
+    //     if (faceLabel == null) window.location.assign('/');  // CANCEL: jump to the home
+    //     else faceLabel = faceLabel.trim().toLowerCase();  // CONFIRM
+    // } while (faceLabel == '');
+
+    //get userId from qrcode-verify.js
+    faceLabel = localStorage.getItem("userId");
+    console.log("正在驗證：" + faceLabel);
 
     // initialize tfjs
     log(`Face Verification for ${faceLabel}`);
