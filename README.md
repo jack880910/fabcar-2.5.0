@@ -37,7 +37,7 @@
 <image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/QRcode%E9%A9%97%E8%AD%89%E9%A0%81%E9%9D%A2.png' width = '80%'>
 
 ### 掃描二維條碼
-<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/%E6%8E%83%E6%8F%8F%E8%A1%8C%E5%8B%95%E8%A3%9D%E7%BD%AEQRcode.png' width = '40%'>
+<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/%E6%8E%83%E6%8F%8F%E8%A1%8C%E5%8B%95%E8%A3%9D%E7%BD%AEQRcode.png' width = '30%'>
 
 ### 二維條碼驗證結果
 <image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/%E9%A9%97%E8%AD%89%E7%B5%90%E6%9E%9C.png' width = '80%'>
@@ -48,13 +48,13 @@
 ## 使用者端
 
 ### App登入畫面
-<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%20%E7%99%BB%E5%85%A5%E7%95%AB%E9%9D%A2.png' width = '80%'>
+<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%20%E7%99%BB%E5%85%A5%E7%95%AB%E9%9D%A2.png' width = '30%'>
 
 ### App首頁
-<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%E9%A6%96%E9%A0%81.png' width = '80%'>
+<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%E9%A6%96%E9%A0%81.png' width = '30%'>
 
 ### App臉部辨識功能
-<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%E8%87%89%E9%83%A8%E8%BE%A8%E8%AD%98%E5%8A%9F%E8%83%BD.png' width = '80%'>
+<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%E8%87%89%E9%83%A8%E8%BE%A8%E8%AD%98%E5%8A%9F%E8%83%BD.png' width = '30%'>
 
 ### App二維條碼驗證
-<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%20QRcode%E9%A9%97%E8%AD%89.png' width = '80%'>
+<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/App%20QRcode%E9%A9%97%E8%AD%89.png' width = '30%'>
