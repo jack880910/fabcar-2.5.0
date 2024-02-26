@@ -5,4 +5,4 @@
 另外，系統還結合了數位簽章、二維條碼、臉部辨識等技術，以確保使用者的身分真實性。
 
 ### 系統首頁  
-<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/%E7%B3%BB%E7%B5%B1%E9%A6%96%E9%A0%81.png' width = '50%'>
+<image src = 'https://github.com/jack880910/fabcar-2.5.0/blob/master/fabcar-app-win/img/%E7%B3%BB%E7%B5%B1%E9%A6%96%E9%A0%81.png' width = '80%'>
