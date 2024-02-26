@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         疫苗批次：${batchNumber}<br>
         接種日期：${vaccinationDate}<br>
         施打組織：${vaccinationOrganization}<br>
-        資料提供者數位簽章：${dataProviderSignature}<br>
+        醫療機構數位簽章：${dataProviderSignature}<br>
         驗證者數位簽章：${verifierSignature}<br>
         數位簽章驗證結果：${verifyResult}<br>
       `;
