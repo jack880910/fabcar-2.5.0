@@ -1,10 +1,11 @@
 # 基於區塊鏈技術的疫苗施打證明系統
-- 使用Hyperledger Fabric搭建的區塊鏈系統，透過Docker在Ubuntu上運行
-- 智能合約(Chaincode)以Go語言撰寫
-- 結合TypeScript、Node.js與Express框架搭建的網頁伺服器
-- 網頁客戶端提供新增與查詢疫苗施打紀錄、註冊臉部辨識模型、使用者身分驗證等功能
-- 使用者能透過以JAVA撰寫的Android App進行身分驗證與查詢疫苗施打紀錄
-- 結合數位簽章、二維條碼與臉部辨識來確保使用者身分真實性
+- 使用Hyperledger Fabric區塊鏈框架
+- 使用Docker、Ubuntu佈署
+- 使用Golang撰寫智能合約(Chaincode)
+- 使用TypeScript、Node.js建置後端
+- 使用JavaScript、HTML、CSS開發前端
+- 使用JAVA撰寫Android App
+- 使用數位簽章、二維條碼與臉部辨識技術來實現身分驗證
 
 
 ## 1. 醫療機構端
