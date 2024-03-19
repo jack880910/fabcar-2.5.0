@@ -1,7 +1,7 @@
 # 基於區塊鏈技術的疫苗施打證明系統
 - 使用Hyperledger Fabric區塊鏈框架
 - 使用Docker、Ubuntu佈署
-- 使用Golang撰寫智能合約(Chaincode)
+- 使用Golang撰寫智能合約
 - 使用TypeScript、Node.js建置後端
 - 使用JavaScript、HTML、CSS開發前端
 - 使用JAVA撰寫Android App
